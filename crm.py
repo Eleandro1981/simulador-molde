@@ -32,7 +32,6 @@ def exibir_crm():
     cliente_index = st.session_state.editar_index
     cliente_atual = todos[cliente_index] if cliente_index is not None and cliente_index < len(todos) else {}
 
-    # Painel de botões
     col1, col2, col3, col4, col5, col6 = st.columns(6)
     with col1:
         if st.button("🆕 Novo"):
@@ -60,7 +59,6 @@ def exibir_crm():
     with col6:
         st.button("📄 Relatório (em breve)")
 
-    # Campo de busca
     if st.session_state.mostrar_busca:
         busca = st.text_input("Digite um nome ou CPF/CNPJ para buscar")
         if busca:
@@ -77,7 +75,6 @@ def exibir_crm():
             st.info("Digite algo para buscar.")
         st.markdown("---")
 
-    # Formulário
     with st.form("formulario_cliente"):
         tipo_pessoa = st.selectbox("Tipo de Pessoa", ["Jurídica", "Física"], index=0 if cliente_atual.get("tipo_pessoa") == "Jurídica" else 1)
         razao_social = st.text_input("Razão Social / Nome Completo", value=cliente_atual.get("razao_social", ""))
@@ -94,4 +91,70 @@ def exibir_crm():
 
         st.markdown("### Endereço")
         cep = st.text_input("CEP", value=cliente_atual.get("cep", ""))
-        logradouro = st.text_input("Logradouro", value=cliente_atual.get("logradouro", "
+        logradouro = st.text_input("Logradouro", value=cliente_atual.get("logradouro", ""))
+        numero = st.text_input("Número", value=cliente_atual.get("numero", ""))
+        complemento = st.text_input("Complemento", value=cliente_atual.get("complemento", ""))
+        bairro = st.text_input("Bairro", value=cliente_atual.get("bairro", ""))
+        municipio = st.text_input("Município", value=cliente_atual.get("municipio", ""))
+        uf = st.text_input("Estado", value=cliente_atual.get("uf", ""))
+        pais = st.text_input("País", value=cliente_atual.get("pais", "Brasil"))
+
+        st.markdown("### Contato")
+        responsavel = st.text_input("Nome do Responsável", value=cliente_atual.get("responsavel", ""))
+        cargo = st.text_input("Cargo", value=cliente_atual.get("cargo", ""))
+        telefone = st.text_input("Telefone", value=cliente_atual.get("telefone", ""))
+        celular = st.text_input("Celular / WhatsApp", value=cliente_atual.get("celular", ""))
+        email = st.text_input("Email", value=cliente_atual.get("email", ""))
+        website = st.text_input("Website", value=cliente_atual.get("website", ""))
+
+        st.markdown("### Preferências")
+        forma_pagamento = st.selectbox("Forma de Pagamento", ["Boleto", "Transferência", "Cartão", "Pix"],
+                                       index=["Boleto", "Transferência", "Cartão", "Pix"].index(cliente_atual.get("forma_pagamento", "Boleto")))
+        indicador_presenca = st.selectbox("Presença do Comprador", ["Presencial", "Internet", "Telefone"],
+                                          index=["Presencial", "Internet", "Telefone"].index(cliente_atual.get("indicador_presenca", "Presencial")))
+
+        observacoes = st.text_area("Observações", value=cliente_atual.get("observacoes", ""))
+
+        salvar = st.form_submit_button("Salvar")
+
+    if salvar:
+        novo = {
+            "tipo_pessoa": tipo_pessoa,
+            "razao_social": razao_social,
+            "nome_fantasia": nome_fantasia,
+            "cpf_cnpj": cpf_cnpj,
+            "ie": ie,
+            "isento_ie": isento_ie,
+            "im": im,
+            "cnae": cnae,
+            "regime_tributario": regime_tributario,
+            "indicador_ie": indicador_ie,
+            "cep": cep,
+            "logradouro": logradouro,
+            "numero": numero,
+            "complemento": complemento,
+            "bairro": bairro,
+            "municipio": municipio,
+            "uf": uf,
+            "pais": pais,
+            "responsavel": responsavel,
+            "cargo": cargo,
+            "telefone": telefone,
+            "celular": celular,
+            "email": email,
+            "website": website,
+            "forma_pagamento": forma_pagamento,
+            "indicador_presenca": indicador_presenca,
+            "observacoes": observacoes
+        }
+
+        if cliente_index is not None and cliente_index < len(todos):
+            todos[cliente_index] = novo
+            mensagem = "✅ Cliente atualizado com sucesso!"
+        else:
+            todos.append(novo)
+            mensagem = "✅ Novo cliente cadastrado com sucesso!"
+
+        salvar_clientes(todos)
+        st.success(mensagem)
+        st.session_state["forcar_rerun"] = True
