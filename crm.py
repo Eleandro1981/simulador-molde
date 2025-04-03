@@ -15,13 +15,12 @@ def salvar_clientes(lista):
         json.dump(lista, f, indent=4)
 
 def exibir_crm():
-if st.session_state.get("forcar_rerun"):
-    st.session_state.forcar_rerun = False
-    st.experimental_rerun()
     st.subheader("👥 Cadastro de Clientes")
+
     if st.session_state.get("forcar_rerun"):
         st.session_state.forcar_rerun = False
         st.experimental_rerun()
+
     if "editar_index" not in st.session_state:
         st.session_state.editar_index = None
     if "mostrar_busca" not in st.session_state:
@@ -78,7 +77,7 @@ if st.session_state.get("forcar_rerun"):
 
     # Formulário
     with st.form("formulario_cliente"):
-        tipo_pessoa = st.selectbox("Tipo de Pessoa", ["Jurídica", "Física"], index=0 if cliente_atual.get("tipo_pessoa") == "Jurídica" else 1 if cliente_atual else 0)
+        tipo_pessoa = st.selectbox("Tipo de Pessoa", ["Jurídica", "Física"], index=0 if cliente_atual.get("tipo_pessoa") == "Jurídica" else 1)
         razao_social = st.text_input("Razão Social / Nome Completo", value=cliente_atual.get("razao_social", ""))
         nome_fantasia = st.text_input("Nome Fantasia", value=cliente_atual.get("nome_fantasia", ""))
         cpf_cnpj = st.text_input("CNPJ / CPF", value=cliente_atual.get("cpf_cnpj", ""))
@@ -152,11 +151,11 @@ if st.session_state.get("forcar_rerun"):
 
         if cliente_index is not None and cliente_index < len(todos):
             todos[cliente_index] = novo
-            st.success("✅ Cliente atualizado com sucesso!")
+            mensagem = "✅ Cliente atualizado com sucesso!"
         else:
             todos.append(novo)
-            st.success("✅ Novo cliente cadastrado com sucesso!")
+            mensagem = "✅ Novo cliente cadastrado com sucesso!"
 
         salvar_clientes(todos)
-        st.success("✅ Cliente salvo com sucesso!")
+        st.success(mensagem)
         st.session_state.forcar_rerun = True
