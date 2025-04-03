@@ -1,6 +1,6 @@
 import streamlit as st
-from simulador import exibir_simulador
-from crm import exibir_crm
+from simulador_inj import exibir_simulador_inj
+from crm_cadastro_cliente import exibir_crm_cadastro_cliente
 
 st.set_page_config(page_title="App de Moldes", layout="wide")
 st.title("🛠️ Plataforma de Projetos de Moldes")
@@ -15,7 +15,7 @@ menu = st.sidebar.radio("Navegar entre os módulos:", [
 ])
 
 if menu == "Simulador de Injeção":
-    exibir_simulador_molde()
+    exibir_simulador_inj()
 
 elif menu == "CRM - Cadastro de Clientes":
     exibir_crm_cadastro_cliente()
