@@ -70,7 +70,8 @@ def exibir_crm():
                 st.markdown(f"**{c['razao_social']}** – {c['cpf_cnpj']}")
                 if st.button("Selecionar", key=f"sel_{i}"):
                     st.session_state.editar_index = i
-                    st.experimental_rerun()
+                    st.session_state.forcar_rerun = True
+
         else:
             st.info("Digite algo para buscar.")
         st.markdown("---")
