@@ -1,4 +1,7 @@
 import streamlit as st
+import numpy as np
+import trimesh
+from scipy.interpolate import RegularGridInterpolator
 
 # Configuração da página
 st.set_page_config(page_title="App de Moldes", layout="wide")
