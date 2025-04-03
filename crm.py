@@ -16,7 +16,9 @@ def salvar_clientes(lista):
 
 def exibir_crm():
     st.subheader("👥 Cadastro de Clientes")
-
+    if st.session_state.get("forcar_rerun"):
+        st.session_state.forcar_rerun = False
+        st.experimental_rerun()
     if "editar_index" not in st.session_state:
         st.session_state.editar_index = None
     if "mostrar_busca" not in st.session_state:
@@ -31,7 +33,7 @@ def exibir_crm():
     with col1:
         if st.button("🆕 Novo"):
             st.session_state.editar_index = None
-            st.experimental_rerun()
+            st.session_state.forcar_rerun = True
     with col2:
         if st.button("🔍 Pesquisar"):
             st.session_state.mostrar_busca = not st.session_state.mostrar_busca
