@@ -15,7 +15,7 @@ menu = st.sidebar.radio("Navegar entre os módulos:", [
 ])
 
 if menu == "Simulador de Injeção":
-    exibir_simulador()
+    exibir_simulador_molde()
 
 elif menu == "CRM - Cadastro de Clientes":
     exibir_crm()
