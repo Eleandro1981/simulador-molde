@@ -155,4 +155,5 @@ def exibir_crm():
             st.success("✅ Novo cliente cadastrado com sucesso!")
 
         salvar_clientes(todos)
-        st.experimental_rerun()
+        st.success("✅ Cliente salvo com sucesso!")
+        st.session_state.forcar_rerun = True
