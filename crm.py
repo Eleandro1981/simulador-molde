@@ -15,6 +15,9 @@ def salvar_clientes(lista):
         json.dump(lista, f, indent=4)
 
 def exibir_crm():
+if st.session_state.get("forcar_rerun"):
+    st.session_state.forcar_rerun = False
+    st.experimental_rerun()
     st.subheader("👥 Cadastro de Clientes")
     if st.session_state.get("forcar_rerun"):
         st.session_state.forcar_rerun = False
