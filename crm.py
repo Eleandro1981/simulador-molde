@@ -6,68 +6,81 @@ import os
 
 CAMINHO_ARQUIVO = "clientes.json"
 
-def salvar_cliente(cliente):
-    if os.path.exists(CAMINHO_ARQUIVO):
-        with open(CAMINHO_ARQUIVO, "r") as f:
-            dados = json.load(f)
-    else:
-        dados = []
-
-    dados.append(cliente)
-
-    with open(CAMINHO_ARQUIVO, "w") as f:
-        json.dump(dados, f, indent=4)
-
+# Carregar dados
 def carregar_clientes():
     if os.path.exists(CAMINHO_ARQUIVO):
         with open(CAMINHO_ARQUIVO, "r") as f:
             return json.load(f)
     return []
 
+# Salvar todos os dados
+def salvar_clientes(lista):
+    with open(CAMINHO_ARQUIVO, "w") as f:
+        json.dump(lista, f, indent=4)
+
 def exibir_crm():
     st.subheader("👥 Cadastro de Clientes")
 
+    clientes = carregar_clientes()
+
+    # 🔍 Campo de busca
+    busca = st.text_input("🔍 Buscar cliente por nome ou CPF/CNPJ")
+
+    if busca:
+        clientes = [c for c in clientes if busca.lower() in c["razao_social"].lower() or busca.lower() in c["cpf_cnpj"].lower()]
+
+    # Verifica se estamos editando
+    cliente_index = st.session_state.get("editar_index", None)
+    cliente_edicao = clientes[cliente_index] if cliente_index is not None and cliente_index < len(clientes) else {}
+
     with st.form("formulario_cliente"):
-        tipo_pessoa = st.selectbox("Tipo de Pessoa", ["Jurídica", "Física"])
-        razao_social = st.text_input("Razão Social / Nome Completo")
-        nome_fantasia = st.text_input("Nome Fantasia (opcional)")
-        cpf_cnpj = st.text_input("CNPJ / CPF")
-        ie = st.text_input("Inscrição Estadual")
-        isento_ie = st.checkbox("Isento de IE")
-        im = st.text_input("Inscrição Municipal (opcional)")
-        cnae = st.text_input("CNAE (opcional)")
-        regime_tributario = st.selectbox("Regime Tributário", ["Simples Nacional", "Lucro Presumido", "Lucro Real"])
-        indicador_ie = st.selectbox("Indicador de IE", ["Contribuinte", "Isento", "Não contribuinte"])
+        tipo_pessoa = st.selectbox("Tipo de Pessoa", ["Jurídica", "Física"], index=0 if cliente_edicao.get("tipo_pessoa") == "Jurídica" else 1 if cliente_edicao else 0)
+        razao_social = st.text_input("Razão Social / Nome Completo", value=cliente_edicao.get("razao_social", ""))
+        nome_fantasia = st.text_input("Nome Fantasia (opcional)", value=cliente_edicao.get("nome_fantasia", ""))
+        cpf_cnpj = st.text_input("CNPJ / CPF", value=cliente_edicao.get("cpf_cnpj", ""))
+        ie = st.text_input("Inscrição Estadual", value=cliente_edicao.get("ie", ""))
+        isento_ie = st.checkbox("Isento de IE", value=cliente_edicao.get("isento_ie", False))
+        im = st.text_input("Inscrição Municipal (opcional)", value=cliente_edicao.get("im", ""))
+        cnae = st.text_input("CNAE (opcional)", value=cliente_edicao.get("cnae", ""))
+        regime_tributario = st.selectbox("Regime Tributário", ["Simples Nacional", "Lucro Presumido", "Lucro Real"],
+                                         index=["Simples Nacional", "Lucro Presumido", "Lucro Real"].index(cliente_edicao.get("regime_tributario", "Simples Nacional")))
+        indicador_ie = st.selectbox("Indicador de IE", ["Contribuinte", "Isento", "Não contribuinte"],
+                                    index=["Contribuinte", "Isento", "Não contribuinte"].index(cliente_edicao.get("indicador_ie", "Contribuinte")))
 
         st.markdown("### Endereço")
-        cep = st.text_input("CEP")
-        logradouro = st.text_input("Logradouro")
-        numero = st.text_input("Número")
-        complemento = st.text_input("Complemento")
-        bairro = st.text_input("Bairro")
-        municipio = st.text_input("Município")
-        uf = st.text_input("Estado (UF)")
-        pais = st.text_input("País", value="Brasil")
+        cep = st.text_input("CEP", value=cliente_edicao.get("cep", ""))
+        logradouro = st.text_input("Logradouro", value=cliente_edicao.get("logradouro", ""))
+        numero = st.text_input("Número", value=cliente_edicao.get("numero", ""))
+        complemento = st.text_input("Complemento", value=cliente_edicao.get("complemento", ""))
+        bairro = st.text_input("Bairro", value=cliente_edicao.get("bairro", ""))
+        municipio = st.text_input("Município", value=cliente_edicao.get("municipio", ""))
+        uf = st.text_input("Estado (UF)", value=cliente_edicao.get("uf", ""))
+        pais = st.text_input("País", value=cliente_edicao.get("pais", "Brasil"))
 
         st.markdown("### Contato")
-        responsavel = st.text_input("Nome do Responsável")
-        cargo = st.text_input("Cargo / Função")
-        telefone = st.text_input("Telefone Fixo")
-        celular = st.text_input("Celular / WhatsApp")
-        email = st.text_input("E-mail")
-        website = st.text_input("Website (opcional)")
+        responsavel = st.text_input("Nome do Responsável", value=cliente_edicao.get("responsavel", ""))
+        cargo = st.text_input("Cargo / Função", value=cliente_edicao.get("cargo", ""))
+        telefone = st.text_input("Telefone Fixo", value=cliente_edicao.get("telefone", ""))
+        celular = st.text_input("Celular / WhatsApp", value=cliente_edicao.get("celular", ""))
+        email = st.text_input("E-mail", value=cliente_edicao.get("email", ""))
+        website = st.text_input("Website (opcional)", value=cliente_edicao.get("website", ""))
 
         st.markdown("### Preferências de Faturamento")
-        forma_pagamento = st.selectbox("Forma de Pagamento Padrão", ["Boleto", "Transferência", "Cartão", "Pix"])
-        indicador_presenca = st.selectbox("Presença do Comprador", ["Presencial", "Internet", "Telefone"])
+        forma_pagamento = st.selectbox("Forma de Pagamento Padrão", ["Boleto", "Transferência", "Cartão", "Pix"],
+                                       index=["Boleto", "Transferência", "Cartão", "Pix"].index(cliente_edicao.get("forma_pagamento", "Boleto")))
+        indicador_presenca = st.selectbox("Presença do Comprador", ["Presencial", "Internet", "Telefone"],
+                                          index=["Presencial", "Internet", "Telefone"].index(cliente_edicao.get("indicador_presenca", "Presencial")))
 
         st.markdown("### Observações")
-        observacoes = st.text_area("Notas internas ou observações adicionais")
+        observacoes = st.text_area("Notas internas ou observações adicionais", value=cliente_edicao.get("observacoes", ""))
 
-        submit = st.form_submit_button("Salvar Cliente")
+        if cliente_index is not None:
+            submit = st.form_submit_button("Salvar Alterações")
+        else:
+            submit = st.form_submit_button("Salvar Novo Cliente")
 
     if submit:
-        cliente = {
+        cliente_novo = {
             "tipo_pessoa": tipo_pessoa,
             "razao_social": razao_social,
             "nome_fantasia": nome_fantasia,
@@ -96,13 +109,37 @@ def exibir_crm():
             "indicador_presenca": indicador_presenca,
             "observacoes": observacoes
         }
-        salvar_cliente(cliente)
-        st.success("✅ Cliente salvo com sucesso!")
+
+        todos = carregar_clientes()
+        if cliente_index is not None:
+            todos[cliente_index] = cliente_novo
+            st.session_state.editar_index = None
+            st.success("✅ Cliente editado com sucesso!")
+        else:
+            todos.append(cliente_novo)
+            st.success("✅ Novo cliente salvo com sucesso!")
+
+        salvar_clientes(todos)
 
     st.markdown("### 📋 Clientes Cadastrados")
-    clientes = carregar_clientes()
-    if clientes:
-        for i, c in enumerate(clientes, 1):
-            st.markdown(f"**{i}. {c['razao_social']}** – {c['cpf_cnpj']}")
+
+    if not clientes:
+        st.info("Nenhum cliente encontrado.")
     else:
-        st.info("Nenhum cliente cadastrado ainda.")
+        for i, c in enumerate(clientes):
+            col1, col2, col3 = st.columns([6, 1, 1])
+            with col1:
+                st.markdown(f"**{i+1}. {c['razao_social']}** – {c['cpf_cnpj']}")
+            with col2:
+                if st.button("✏️ Editar", key=f"edit_{i}"):
+                    st.session_state.editar_index = i
+                    st.experimental_rerun()
+            with col3:
+                if st.button("🗑️ Excluir", key=f"delete_{i}"):
+                    todos = carregar_clientes()
+                    if i < len(todos):
+                        nome = todos[i]["razao_social"]
+                        todos.pop(i)
+                        salvar_clientes(todos)
+                        st.success(f"❌ Cliente '{nome}' excluído com sucesso!")
+                        st.experimental_rerun()
