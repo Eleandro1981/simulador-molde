@@ -18,7 +18,7 @@ if menu == "Simulador de Injeção":
     exibir_simulador_molde()
 
 elif menu == "CRM - Cadastro de Clientes":
-    exibir_crm()
+    exibir_crm_cadastro_cliente()
 
 elif menu == "Orçamento de Moldes":
     st.subheader("📦 Orçamento de Moldes")
