@@ -15,13 +15,13 @@ def salvar_clientes(lista):
         json.dump(lista, f, indent=4)
 
 def exibir_crm():
-    st.subheader("👥 Cadastro de Clientes")
-
     if "forcar_rerun" not in st.session_state:
         st.session_state["forcar_rerun"] = False
     if st.session_state["forcar_rerun"]:
         st.session_state["forcar_rerun"] = False
-        st.experimental_rerun()
+        st.stop()
+
+    st.subheader("👥 Cadastro de Clientes")
 
     if "editar_index" not in st.session_state:
         st.session_state.editar_index = None
