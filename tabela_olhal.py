@@ -10,21 +10,19 @@ def exibir_tabela_olhal():
 
     # Carrega a planilha
     df = pd.read_excel("arquivos_3d/Tabela Olhal.xlsx")
-
-    # Remove linhas sem nome (geralmente a primeira, se estiver vazia)
     df = df.dropna(subset=["Nome"])
 
     st.markdown("**Clique para baixar os modelos 3D:**")
 
-    st.markdown("""
-    #### 🧾 Legenda das colunas:
-    - **M6** = Dimensão do olhal  
-    - **M6x1,0** = Rosca do olhal  
-    - **0.054 kg** = Peso do olhal  
-    - **70 kgf** = Peso de içamento  
-    - **.x_t** = Download em formato Parasolid  
-    - **.stp** = Download em formato STP  
-    """)
+    # Cabeçalho descritivo da tabela
+    col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 2, 2])
+    col1.markdown("**Dimensão**")
+    col2.markdown("**Rosca**")
+    col3.markdown("**Peso**")
+    col4.markdown("**Carga**")
+    col5.markdown("—")
+    col6.markdown("**Download Parasolid (.x_t)**")
+    col7.markdown("**Download STP (.stp)**")
 
     for i, row in df.iterrows():
         col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 2, 2])
@@ -33,6 +31,7 @@ def exibir_tabela_olhal():
         col2.write(row["Rosca"])
         col3.write(f'{row["Peso - Kg"]:.3f} kg')
         col4.write(f'{row["Carga -T"]:.0f} kgf')
+        col5.write("")
 
         xt_name = f"olhal_{row['Nome'].lower()}.x_t"
         stp_name = f"olhal_{row['Nome'].lower()}.stp"
