@@ -1,7 +1,7 @@
 streamlit
+streamlit-3d-viewer
 numpy
 scipy
 trimesh
 pandas
 openpyxl
-streamlit-3d-viewer
