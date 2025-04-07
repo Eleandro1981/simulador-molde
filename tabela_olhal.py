@@ -4,16 +4,17 @@ import pandas as pd
 def exibir_tabela_olhal():
     st.subheader("🧱 Tabela - Olhal de Içamento")
 
-    # Exemplo de tabela (você pode substituir por leitura de CSV futuramente)
+    # Exemplo de tabela (substitua pelos dados reais e arquivos que você tiver)
     dados = [
         {"Parafuso": "M8", "D": "20", "d": "8", "Download .x_t": "olhal_m8.x_t", "Download .step": "olhal_m8.step"},
         {"Parafuso": "M10", "D": "25", "d": "10", "Download .x_t": "olhal_m10.x_t", "Download .step": "olhal_m10.step"},
         {"Parafuso": "M12", "D": "30", "d": "12", "Download .x_t": "olhal_m12.x_t", "Download .step": "olhal_m12.step"},
-        # adicione mais linhas conforme necessário
+        # Adicione mais linhas conforme a tabela real
     ]
 
     df = pd.DataFrame(dados)
 
+    st.markdown("**Clique para baixar o modelo 3D do componente:**")
     for i, row in df.iterrows():
         col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 2, 2])
         col1.write(row["Parafuso"])
