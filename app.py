@@ -1,6 +1,7 @@
 import streamlit as st
 from simulador import exibir_simulador
 from crm import exibir_crm
+from tabela_olhal import exibir_tabela_olhal
 
 st.set_page_config(page_title="App de Moldes", layout="wide")
 st.title("🛠️ Plataforma de Projetos de Moldes")
@@ -29,10 +30,8 @@ elif menu == "Checklist de Projeto":
     st.write("Em breve: verificação de itens essenciais antes da fabricação.")
 
 elif menu == "Tabelas de Componentes":
-    st.subheader("🧱 Tabelas de Componentes")
-    st.write("Em breve: consulta a componentes com visualização 3D.")
+    exibir_tabela_olhal()
 
 elif menu == "Configurações":
     st.subheader("⚙️ Configurações")
     st.write("Ajustes gerais do sistema, preferências e dados da empresa.")
-
