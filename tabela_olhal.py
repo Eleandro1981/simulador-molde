@@ -16,6 +16,16 @@ def exibir_tabela_olhal():
 
     st.markdown("**Clique para baixar os modelos 3D:**")
 
+    st.markdown("""
+    #### 🧾 Legenda das colunas:
+    - **M6** = Dimensão do olhal  
+    - **M6x1,0** = Rosca do olhal  
+    - **0.054 kg** = Peso do olhal  
+    - **70 kgf** = Peso de içamento  
+    - **.x_t** = Download em formato Parasolid  
+    - **.stp** = Download em formato STP  
+    """)
+
     for i, row in df.iterrows():
         col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 2, 2])
 
