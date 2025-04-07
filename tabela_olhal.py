@@ -5,45 +5,51 @@ import os
 def exibir_tabela_olhal():
     st.subheader("🧱 Tabela - Olhal de Içamento")
 
-    dados = [
-        {"Parafuso": "M8", "D": "20", "d": "8", "Download .x_t": "olhal_m8.x_t", "Download .step": "olhal_m8.step"},
-        {"Parafuso": "M10", "D": "25", "d": "10", "Download .x_t": "olhal_m10.x_t", "Download .step": "olhal_m10.step"},
-        {"Parafuso": "M12", "D": "30", "d": "12", "Download .x_t": "olhal_m12.x_t", "Download .step": "olhal_m12.step"}
-    ]
+    # Exibe a imagem técnica
+    st.image("arquivos_3d/Olhal.jpg", caption="Desenho técnico do Olhal", use_column_width=True)
 
-    df = pd.DataFrame(dados)
+    # Carrega a planilha
+    df = pd.read_excel("arquivos_3d/Tabela Olhal.xlsx")
 
-    st.markdown("**Clique para baixar o modelo 3D do componente:**")
+    # Remove linhas sem nome (geralmente a primeira, se estiver vazia)
+    df = df.dropna(subset=["Nome"])
+
+    st.markdown("**Clique para baixar os modelos 3D:**")
 
     for i, row in df.iterrows():
-        col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 2, 2])
-        col1.write(row["Parafuso"])
-        col2.write(row["D"])
-        col3.write(row["d"])
+        col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 2, 2])
 
-        xt_path = os.path.join("arquivos_3d", row["Download .x_t"])
-        step_path = os.path.join("arquivos_3d", row["Download .step"])
+        col1.write(row["Nome"])
+        col2.write(row["Rosca"])
+        col3.write(f'{row["Peso - Kg"]:.3f} kg')
+        col4.write(f'{row["Carga -T"]:.0f} kgf')
+
+        xt_name = f"olhal_{row['Nome'].lower()}.x_t"
+        stp_name = f"olhal_{row['Nome'].lower()}.stp"
+
+        xt_path = os.path.join("arquivos_3d", xt_name)
+        stp_path = os.path.join("arquivos_3d", stp_name)
 
         if os.path.exists(xt_path):
             with open(xt_path, "rb") as f:
-                col4.download_button(
+                col6.download_button(
                     label=".x_t",
                     data=f,
-                    file_name=row["Download .x_t"],
+                    file_name=xt_name,
                     mime="application/octet-stream",
                     key=f"x_t_{i}"
                 )
         else:
-            col4.write("❌")
+            col6.write("❌")
 
-        if os.path.exists(step_path):
-            with open(step_path, "rb") as f:
-                col5.download_button(
-                    label=".step",
+        if os.path.exists(stp_path):
+            with open(stp_path, "rb") as f:
+                col7.download_button(
+                    label=".stp",
                     data=f,
-                    file_name=row["Download .step"],
+                    file_name=stp_name,
                     mime="application/octet-stream",
-                    key=f"step_{i}"
+                    key=f"stp_{i}"
                 )
         else:
-            col5.write("❌")
+            col7.write("❌")
