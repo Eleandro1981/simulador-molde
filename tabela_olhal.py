@@ -6,7 +6,7 @@ def exibir_tabela_olhal():
     st.subheader("🧱 Tabela - Olhal de Içamento")
 
     # Exibe a imagem técnica
-    st.image("arquivos_3d/Olhal.jpg", caption="Desenho técnico do Olhal", use_column_width=True)
+    st.image("arquivos_3d/Olhal.jpg", caption="Desenho técnico do Olhal", use_container_width=True)
 
     # Carrega a planilha
     df = pd.read_excel("arquivos_3d/Tabela Olhal.xlsx")
