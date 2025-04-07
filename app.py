@@ -2,6 +2,7 @@ import streamlit as st
 from simulador import exibir_simulador
 from crm import exibir_crm
 from tabela_olhal import exibir_tabela_olhal
+from visualizador import exibir_visualizador
 
 st.set_page_config(page_title="App de Moldes", layout="wide")
 st.title("🛠️ Plataforma de Projetos de Moldes")
@@ -12,6 +13,7 @@ menu = st.sidebar.radio("Navegar entre os módulos:", [
     "Orçamento de Moldes",
     "Checklist de Projeto",
     "Tabelas de Componentes",
+    "Visualizador 3D",
     "Configurações"
 ])
 
@@ -31,6 +33,9 @@ elif menu == "Checklist de Projeto":
 
 elif menu == "Tabelas de Componentes":
     exibir_tabela_olhal()
+
+elif menu == "Visualizador 3D":
+    exibir_visualizador()
 
 elif menu == "Configurações":
     st.subheader("⚙️ Configurações")
