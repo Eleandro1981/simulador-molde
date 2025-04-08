@@ -2,7 +2,7 @@ import streamlit as st
 from simulador import exibir_simulador
 from crm import exibir_crm
 from tabela_olhal import exibir_tabela_olhal
-from visualizador import exibir_visualizador
+# from visualizador import exibir_visualizador  # Removido
 
 st.set_page_config(page_title="App de Moldes", layout="wide")
 st.title("🛠️ Plataforma de Projetos de Moldes")
